@@ -1,8 +1,8 @@
-# 🔬 DataWise — AI-Powered EDA Studio
+# 🔬 AInalytics — AI-Powered EDA Studio
 
 > Upload any dataset. Understand everything. No code required.
 
-DataWise is an open-source, AI-powered exploratory data analysis tool that turns raw datasets into deep understanding — narrated in plain English by Claude AI. Built for learners, datathon participants, and anyone who wants to truly understand their data before modeling.
+AInalytics is an open-source, AI-powered exploratory data analysis tool that turns raw datasets into deep understanding — narrated in plain English by Claude AI. Built for learners, datathon participants, and anyone who wants to truly understand their data before modeling.
 
 **Launched at WiDS (Women in Data Science) 2026 Datathon 🌸**
 
@@ -45,8 +45,8 @@ DataWise is an open-source, AI-powered exploratory data analysis tool that turns
 
 ### Local
 ```bash
-git clone https://github.com/yourusername/datawise
-cd datawise
+git clone https://github.com/yourusername/ainalytics
+cd ainalytics
 pip install -r requirements.txt
 streamlit run app.py
 ```
@@ -76,7 +76,7 @@ Get a free Claude API key at [console.anthropic.com](https://console.anthropic.c
 
 ## 🧠 The Teaching Philosophy
 
-Every insight in DataWise follows this pattern:
+Every insight in AInalytics follows this pattern:
 
 ```
 WHAT you're seeing
@@ -96,7 +96,7 @@ User Upload (CSV/Excel/Parquet/JSON/TSV)
     +
 Context (goal, domain, experience level)
     ↓
-DataWise Engine
+AInalytics Engine
 ├── Data Profiler (Pandas + NumPy + SciPy)
 ├── Visualization Layer (Plotly)
 ├── Issue Detector (outliers, skew, cardinality, missing patterns)

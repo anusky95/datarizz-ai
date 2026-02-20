@@ -10,8 +10,8 @@ from anthropic import Anthropic
 
 # ── Page config ──────────────────────────────────────────────────────────────
 st.set_page_config(
-    page_title="DataWise — AI EDA Studio",
-    page_icon="🔬",
+    page_title="DataRizz.ai — AI EDA Studio",
+    page_icon="🧠",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -427,10 +427,10 @@ with st.sidebar:
     <div style='font-family:Syne,sans-serif;font-size:1.4rem;font-weight:800;
     background:linear-gradient(135deg,#7c6af7,#4fd1c5);-webkit-background-clip:text;
     -webkit-text-fill-color:transparent;margin-bottom:0.2rem'>
-    🔬 DataWise
+    🧠 DataRizz.ai
     </div>
     <div style='color:#6b6b80;font-size:0.78rem;margin-bottom:1.5rem;font-family:DM Mono,monospace'>
-    AI EDA Studio v1.0
+    AI EDA Studio with infinite rizz v1.0
     </div>
     """, unsafe_allow_html=True)
 
@@ -515,8 +515,8 @@ with st.sidebar:
 # ── Main content ───────────────────────────────────────────────────────────────
 st.markdown("""
 <div class='hero'>
-  <div class='hero-title'>DataWise</div>
-  <p class='hero-sub'>Upload any dataset → get deep EDA + feature engineering insights, narrated by AI in plain English</p>
+  <div class='hero-title'>DataRizz.ai</div>
+  <p class='hero-sub'>Upload any dataset → get deep EDA + feature engineering insights with infinite rizz, narrated by AI in plain English</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -646,10 +646,10 @@ Write a warm, encouraging "first impression" of this dataset in 3 short paragrap
 2. The most interesting or important things you notice at first glance
 3. What you'd recommend exploring first, given their goal
 
-Use plain English. Avoid jargon. Be specific to THIS dataset, not generic. Be encouraging.
+Use plain English. Avoid jargon. Be specific to THIS dataset, not generic. Be encouraging and charismatic.
 """
                 response = ask_claude(client, [{"role": "user", "content": prompt}],
-                    "You are DataWise, an AI data science mentor. Be warm, specific, and educational.")
+                    "You are DataRizz.ai, an AI data science mentor with infinite rizz. Be warm, specific, and educational.")
                 st.session_state.first_impression = response
         if "first_impression" in st.session_state:
             st.markdown(f"<div class='insight-card'>{st.session_state.first_impression}</div>",
@@ -675,12 +675,12 @@ with tab2:
             fig = px.histogram(df, x=sel_num, nbins=40, title=f"Distribution of {sel_num}",
                 color_discrete_sequence=["#7c6af7"], **plotly_theme())
             fig.update_layout(showlegend=False, **plotly_layout_theme())
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width='stretch')
         with c2:
             fig2 = px.box(df, y=sel_num, title=f"Box Plot — {sel_num}",
                 color_discrete_sequence=["#4fd1c5"], **plotly_theme())
             fig2.update_layout(**plotly_layout_theme())
-            st.plotly_chart(fig2, use_container_width=True)
+            st.plotly_chart(fig2, width='stretch')
 
         # Stats
         stats = col_data.describe()
@@ -710,10 +710,10 @@ Explain in plain English for a {level}:
 2. WHY IT MATTERS: Why should they care about skewness, outliers, or the spread?
 3. ACTION: What should they consider doing with this column before modeling?
 
-Be specific, warm, and use an analogy if helpful. 3-4 sentences max per point.
+Be specific, warm, and use an analogy if helpful. 3-4 sentences max per point. Add some charisma.
 """
                 response = ask_claude(client, [{"role": "user", "content": prompt}],
-                    "You are DataWise, an AI data science mentor. Be concise, warm, and educational.")
+                    "You are DataRizz.ai, an AI data science mentor with infinite rizz. Be concise, warm, and educational.")
                 st.markdown(f"<div class='insight-card'>{response}</div>", unsafe_allow_html=True)
     else:
         st.info("No numeric columns found.")
@@ -730,7 +730,7 @@ Be specific, warm, and use an analogy if helpful. 3-4 sentences max per point.
             labels={"x": sel_cat, "y": "Count"},
             color_discrete_sequence=["#f7716a"], **plotly_theme())
         fig3.update_layout(**plotly_layout_theme())
-        st.plotly_chart(fig3, use_container_width=True)
+        st.plotly_chart(fig3, width='stretch')
 
         n_unique = df[sel_cat].nunique()
         cardinality_pct = n_unique / len(df) * 100
@@ -756,10 +756,10 @@ Explain for a {level}:
 2. WATCH OUT: Are there any red flags (high cardinality, rare categories, imbalance)?
 3. ACTION: How should they handle this column for analysis or modeling?
 
-Be specific to this data. 3-4 sentences per point. Plain English.
+Be specific to this data. 3-4 sentences per point. Plain English with a touch of rizz.
 """
                 response = ask_claude(client, [{"role": "user", "content": prompt}],
-                    "You are DataWise, an AI data science mentor.")
+                    "You are DataRizz.ai, an AI data science mentor with infinite rizz.")
                 st.markdown(f"<div class='insight-card'>{response}</div>", unsafe_allow_html=True)
     else:
         st.info("No categorical columns found.")
@@ -779,7 +779,7 @@ Be specific to this data. 3-4 sentences per point. Plain English.
             **plotly_theme()
         )
         fig_miss.update_layout(coloraxis_showscale=False, **plotly_layout_theme())
-        st.plotly_chart(fig_miss, use_container_width=True)
+        st.plotly_chart(fig_miss, width='stretch')
     else:
         st.markdown("<div class='insight-card success'>🎉 No missing values found in this dataset!</div>",
             unsafe_allow_html=True)
@@ -800,7 +800,7 @@ with tab3:
             **plotly_theme()
         )
         fig_corr.update_layout(height=max(400, len(numeric) * 50), **plotly_layout_theme())
-        st.plotly_chart(fig_corr, use_container_width=True)
+        st.plotly_chart(fig_corr, width='stretch')
 
         # Top correlations
         corr_pairs = []
@@ -845,10 +845,10 @@ Explain:
 3. Which correlations might cause problems (multicollinearity) and what to do
 4. Which correlations might be useful for their goal: "{goal}"
 
-Plain English, 3-4 sentences each. Use a simple analogy for multicollinearity.
+Plain English, 3-4 sentences each. Use a simple analogy for multicollinearity. Keep it charismatic.
 """
                 response = ask_claude(client, [{"role": "user", "content": prompt}],
-                    "You are DataWise, an AI data science mentor.")
+                    "You are DataRizz.ai, an AI data science mentor with infinite rizz.")
                 st.markdown(f"<div class='insight-card'>{response}</div>", unsafe_allow_html=True)
     else:
         st.info("Need at least 2 numeric columns for correlation analysis.")
@@ -872,7 +872,7 @@ Plain English, 3-4 sentences each. Use a simple analogy for multicollinearity.
             **plotly_theme()
         )
         fig_scatter.update_layout(**plotly_layout_theme())
-        st.plotly_chart(fig_scatter, use_container_width=True)
+        st.plotly_chart(fig_scatter, width='stretch')
 
     st.divider()
     st.markdown("<div class='section-header'>📦 Outlier Detection</div>", unsafe_allow_html=True)
@@ -916,10 +916,10 @@ Explain:
 3. OPTIONS: What are the 3 ways to handle outliers (remove, cap, keep) and when to use each?
 4. RECOMMENDATION: Given these specific columns and domain, what would you suggest?
 
-Plain English, educational, warm tone.
+Plain English, educational, warm tone with rizz.
 """
                     response = ask_claude(client, [{"role": "user", "content": prompt}],
-                        "You are DataWise, an AI data science mentor.")
+                        "You are DataRizz.ai, an AI data science mentor with infinite rizz.")
                     st.markdown(f"<div class='insight-card'>{response}</div>", unsafe_allow_html=True)
         else:
             st.markdown("<div class='insight-card success'>✓ No significant outliers detected using the IQR method.</div>",
@@ -933,14 +933,14 @@ Plain English, educational, warm tone.
             fig_target = px.histogram(df, x=target, nbins=40, title=f"Target Distribution: {target}",
                 color_discrete_sequence=["#4fd1c5"], **plotly_theme())
             fig_target.update_layout(**plotly_layout_theme())
-            st.plotly_chart(fig_target, use_container_width=True)
+            st.plotly_chart(fig_target, width='stretch')
         else:
             vc = df[target].value_counts()
             fig_target = px.pie(values=vc.values, names=vc.index.astype(str),
                 title=f"Target Distribution: {target}",
                 color_discrete_sequence=px.colors.qualitative.Set3, **plotly_theme())
             fig_target.update_layout(**plotly_layout_theme())
-            st.plotly_chart(fig_target, use_container_width=True)
+            st.plotly_chart(fig_target, width='stretch')
             # Class imbalance warning
             if len(vc) >= 2:
                 ratio = vc.iloc[0] / vc.iloc[-1]
@@ -967,10 +967,10 @@ Explain:
 3. What to watch out for (imbalance, skewness, leakage risk)
 4. How the other columns in the dataset relate to predicting this target
 
-Practical, encouraging, plain English for a {level}.
+Practical, encouraging, plain English for a {level}. Add some charisma.
 """
                 response = ask_claude(client, [{"role": "user", "content": prompt}],
-                    "You are DataWise, an AI data science mentor.")
+                    "You are DataRizz.ai, an AI data science mentor with infinite rizz.")
                 st.markdown(f"<div class='insight-card'>{response}</div>", unsafe_allow_html=True)
 
 # ════════════════════════════════════════════════════════════════════
@@ -1039,10 +1039,10 @@ Any columns that look like IDs, leakage risks, or are otherwise problematic
 How to extract useful features from date columns
 
 For each recommendation: explain WHAT to do, WHY it helps, and HOW to do it in plain English.
-Make it educational and specific to THIS dataset, not generic advice.
+Make it educational and specific to THIS dataset, not generic advice. Keep it charismatic.
 """
             response = ask_claude(client, [{"role": "user", "content": prompt}],
-                "You are DataWise, an AI data science mentor. Be specific, actionable, and educational.")
+                "You are DataRizz.ai, an AI data science mentor with infinite rizz. Be specific, actionable, and educational.")
             st.session_state.fe_plan = response
 
     if "fe_plan" in st.session_state:
@@ -1139,10 +1139,10 @@ Format:
 ```python
 # your code here
 ```
-Then explain it in plain English.
+Then explain it in plain English with some personality.
 """
             response = ask_claude(client, [{"role": "user", "content": prompt}],
-                "You are DataWise. Write clean, working pandas code with clear explanations.")
+                "You are DataRizz.ai. Write clean, working pandas code with clear explanations and infinite rizz.")
             st.markdown(f"<div class='insight-card info'>{response}</div>", unsafe_allow_html=True)
 
 # ════════════════════════════════════════════════════════════════════
@@ -1187,7 +1187,7 @@ with tab5:
         if user_input:
             st.session_state.chat_history.append({"role": "user", "content": user_input})
             summary = get_df_summary(df)
-            system = f"""You are DataWise, a friendly AI data science mentor.
+            system = f"""You are DataRizz.ai, a friendly AI data science mentor with infinite rizz.
 The user is a {level} with goal: "{goal}" in the {domain} domain.
 
 Dataset context:
