@@ -4,6 +4,7 @@ import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+import streamlit.components.v1 as components
 import io
 import json
 from anthropic import Anthropic
@@ -15,6 +16,18 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
 )
+
+# ── Google Analytics ──────────────────────────────────────────────────────────
+components.html("""
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-28ZJQE2Z6R"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-28ZJQE2Z6R');
+</script>
+""", height=0)
 
 # ── Custom CSS ────────────────────────────────────────────────────────────────
 st.markdown("""
