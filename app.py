@@ -10,7 +10,7 @@ from anthropic import Anthropic
 
 # ── Page config ──────────────────────────────────────────────────────────────
 st.set_page_config(
-    page_title="DataRizz.ai — AI EDA Studio",
+    page_title="DataRizz.AI — AI EDA Studio",
     page_icon="🧠",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -427,7 +427,7 @@ with st.sidebar:
     <div style='font-family:Syne,sans-serif;font-size:1.4rem;font-weight:800;
     background:linear-gradient(135deg,#7c6af7,#4fd1c5);-webkit-background-clip:text;
     -webkit-text-fill-color:transparent;margin-bottom:0.2rem'>
-    🧠 DataRizz.ai
+    🧠 DataRizz.AI
     </div>
     <div style='color:#6b6b80;font-size:0.78rem;margin-bottom:1.5rem;font-family:DM Mono,monospace'>
     AI EDA Studio with infinite rizz v1.0
@@ -515,7 +515,7 @@ with st.sidebar:
 # ── Main content ───────────────────────────────────────────────────────────────
 st.markdown("""
 <div class='hero'>
-  <div class='hero-title'>DataRizz.ai</div>
+    <div class='hero-title'>DataRizz.AI</div>
   <p class='hero-sub'>Upload any dataset → get deep EDA + feature engineering insights with infinite rizz, narrated by AI in plain English</p>
 </div>
 """, unsafe_allow_html=True)
@@ -649,7 +649,7 @@ Write a warm, encouraging "first impression" of this dataset in 3 short paragrap
 Use plain English. Avoid jargon. Be specific to THIS dataset, not generic. Be encouraging and charismatic.
 """
                 response = ask_claude(client, [{"role": "user", "content": prompt}],
-                    "You are DataRizz.ai, an AI data science mentor with infinite rizz. Be warm, specific, and educational.")
+                    "You are DataRizz.AI, an AI data science mentor with infinite rizz. Be warm, specific, and educational.")
                 st.session_state.first_impression = response
         if "first_impression" in st.session_state:
             st.markdown(f"<div class='insight-card'>{st.session_state.first_impression}</div>",
@@ -713,7 +713,7 @@ Explain in plain English for a {level}:
 Be specific, warm, and use an analogy if helpful. 3-4 sentences max per point. Add some charisma.
 """
                 response = ask_claude(client, [{"role": "user", "content": prompt}],
-                    "You are DataRizz.ai, an AI data science mentor with infinite rizz. Be concise, warm, and educational.")
+                    "You are DataRizz.AI, an AI data science mentor with infinite rizz. Be concise, warm, and educational.")
                 st.markdown(f"<div class='insight-card'>{response}</div>", unsafe_allow_html=True)
     else:
         st.info("No numeric columns found.")
@@ -759,7 +759,7 @@ Explain for a {level}:
 Be specific to this data. 3-4 sentences per point. Plain English with a touch of rizz.
 """
                 response = ask_claude(client, [{"role": "user", "content": prompt}],
-                    "You are DataRizz.ai, an AI data science mentor with infinite rizz.")
+                    "You are DataRizz.AI, an AI data science mentor with infinite rizz.")
                 st.markdown(f"<div class='insight-card'>{response}</div>", unsafe_allow_html=True)
     else:
         st.info("No categorical columns found.")
@@ -848,7 +848,7 @@ Explain:
 Plain English, 3-4 sentences each. Use a simple analogy for multicollinearity. Keep it charismatic.
 """
                 response = ask_claude(client, [{"role": "user", "content": prompt}],
-                    "You are DataRizz.ai, an AI data science mentor with infinite rizz.")
+                    "You are DataRizz.AI, an AI data science mentor with infinite rizz.")
                 st.markdown(f"<div class='insight-card'>{response}</div>", unsafe_allow_html=True)
     else:
         st.info("Need at least 2 numeric columns for correlation analysis.")
@@ -919,7 +919,7 @@ Explain:
 Plain English, educational, warm tone with rizz.
 """
                     response = ask_claude(client, [{"role": "user", "content": prompt}],
-                        "You are DataRizz.ai, an AI data science mentor with infinite rizz.")
+                        "You are DataRizz.AI, an AI data science mentor with infinite rizz.")
                     st.markdown(f"<div class='insight-card'>{response}</div>", unsafe_allow_html=True)
         else:
             st.markdown("<div class='insight-card success'>✓ No significant outliers detected using the IQR method.</div>",
@@ -970,7 +970,7 @@ Explain:
 Practical, encouraging, plain English for a {level}. Add some charisma.
 """
                 response = ask_claude(client, [{"role": "user", "content": prompt}],
-                    "You are DataRizz.ai, an AI data science mentor with infinite rizz.")
+                    "You are DataRizz.AI, an AI data science mentor with infinite rizz.")
                 st.markdown(f"<div class='insight-card'>{response}</div>", unsafe_allow_html=True)
 
 # ════════════════════════════════════════════════════════════════════
@@ -1042,7 +1042,7 @@ For each recommendation: explain WHAT to do, WHY it helps, and HOW to do it in p
 Make it educational and specific to THIS dataset, not generic advice. Keep it charismatic.
 """
             response = ask_claude(client, [{"role": "user", "content": prompt}],
-                "You are DataRizz.ai, an AI data science mentor with infinite rizz. Be specific, actionable, and educational.")
+                "You are DataRizz.AI, an AI data science mentor with infinite rizz. Be specific, actionable, and educational.")
             st.session_state.fe_plan = response
 
     if "fe_plan" in st.session_state:
@@ -1142,7 +1142,7 @@ Format:
 Then explain it in plain English with some personality.
 """
             response = ask_claude(client, [{"role": "user", "content": prompt}],
-                "You are DataRizz.ai. Write clean, working pandas code with clear explanations and infinite rizz.")
+                "You are DataRizz.AI. Write clean, working pandas code with clear explanations and infinite rizz.")
             st.markdown(f"<div class='insight-card info'>{response}</div>", unsafe_allow_html=True)
 
 # ════════════════════════════════════════════════════════════════════
@@ -1187,7 +1187,7 @@ with tab5:
         if user_input:
             st.session_state.chat_history.append({"role": "user", "content": user_input})
             summary = get_df_summary(df)
-            system = f"""You are DataRizz.ai, a friendly AI data science mentor with infinite rizz.
+            system = f"""You are DataRizz.AI, a friendly AI data science mentor with infinite rizz.
 The user is a {level} with goal: "{goal}" in the {domain} domain.
 
 Dataset context:

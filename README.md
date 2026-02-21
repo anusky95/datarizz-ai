@@ -1,62 +1,51 @@
-# 🔬 AInalytics — AI-Powered EDA Studio
+# DataRizz.AI ✨ — Give Your Data a Glow Up
 
-> Upload any dataset. Understand everything. No code required.
+![DataRizz Demo GIF](https://placehold.co/800x450/1a1a2e/e8e8f0?text=DataRizz.AI+Demo+GIF)
 
-AInalytics is an open-source, AI-powered exploratory data analysis tool that turns raw datasets into deep understanding — narrated in plain English by Claude AI. Built for learners, datathon participants, and anyone who wants to truly understand their data before modeling.
+## 🚀 Open the Public App
 
-**Launched at WiDS (Women in Data Science) 2026 Datathon 🌸**
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/anusky95/datarizz-ai/app.py)
 
----
-
-## ✨ Features
-
-### 🏠 Overview
-- Instant data quality score (0–100)
-- Column inventory with type detection
-- Missing value summary
-- Claude's "first impression" — what your data is about, in plain English
-
-### 🔍 Simple EDA
-- Distribution plots (histogram + box plot) for every numeric column
-- Value counts for categorical columns
-- Missing values heatmap
-- Claude explains every chart: *what you're seeing → why it matters → what to do*
-
-### 📊 Advanced EDA
-- Correlation matrix with top pairs highlighted
-- Bivariate scatter plots with trend lines
-- Outlier detection (IQR method) with severity flagging
-- Target variable analysis with class imbalance detection
-
-### ⚙️ Feature Engineering
-- Auto-detects: skewed distributions, high cardinality, missing patterns
-- AI-generated full feature engineering roadmap specific to YOUR data
-- Interactive feature creator — describe a feature in plain English, get pandas code
-- Encoding, scaling, and transformation recommendations
-
-### 💬 Ask Claude
-- Full conversational AI assistant with context about your dataset
-- Suggested questions for beginners
-- Persistent chat history per session
+Anyone can open the app in the browser, upload a dataset, and instantly get visualizations + AI explanations.
 
 ---
 
-## 🚀 Quick Start
+## 🌟 No Cap: Your Data Just Got Rizz
 
-### Local
+**DataRizz.AI** is the AI‑powered data storyteller that transforms boring datasets into **beautiful, narrated insights** with zero effort. Upload any tabular dataset (CSV, Excel, Parquet, JSON), and let DataRizz cook up deep Exploratory Data Analysis (EDA), stunning visualizations, and plain‑English explanations.
+
+### ✨ Built with Vibe Coding & Claude
+
+This project was **vibe‑coded with Claude** to show how fast you can build powerful, user‑friendly data tools with AI. No cap, this is the future.
+
+---
+
+## 🔥 Features That Slay
+
+- **Instant Data Rizz**: A fast overview of data quality, column types, missing values, and key metrics.
+- **🔥 Roast My Data**: Fun, Gen‑Z roasts that still flag real data quality issues.
+- **Narrated Insights**: Claude explains charts in plain English for beginners and pros.
+- **Beautiful Visualizations**: Auto‑generated, interactive plots that make your data pop.
+- **Shareable**: Designed for easy sharing and demo‑ready visuals.
+
+---
+
+## ⚡ How to Get Started (Public App)
+
+1. Click the **Open the Public App** button above.
+2. Upload a CSV, Excel, Parquet, or JSON file.
+3. Add your Claude API key in the sidebar to unlock AI explanations.
+
+---
+
+## 🧪 Run Locally
+
 ```bash
-git clone https://github.com/yourusername/ainalytics
-cd ainalytics
+git clone https://github.com/anusky95/datarizz-ai
+cd datarizz-ai
 pip install -r requirements.txt
 streamlit run app.py
 ```
-
-### Streamlit Cloud
-1. Fork this repo
-2. Go to [share.streamlit.io](https://share.streamlit.io)
-3. Connect your GitHub repo
-4. Set main file: `app.py`
-5. Deploy!
 
 Get a free Claude API key at [console.anthropic.com](https://console.anthropic.com)
 
@@ -72,51 +61,6 @@ Get a free Claude API key at [console.anthropic.com](https://console.anthropic.c
 | JSON | `.json` |
 | TSV | `.tsv` |
 
----
-
-## 🧠 The Teaching Philosophy
-
-Every insight in AInalytics follows this pattern:
-
-```
-WHAT you're seeing
-  → WHY it matters for your goal
-    → WHAT to do about it
-      → WHAT concept you're learning
-```
-
-This isn't just another EDA tool. It's a **data science mentor** — built for the person who just Googled "what is a CSV" and the practicing analyst who wants faster insights.
-
----
-
-## 🏗️ Architecture
-
-```
-User Upload (CSV/Excel/Parquet/JSON/TSV)
-    +
-Context (goal, domain, experience level)
-    ↓
-AInalytics Engine
-├── Data Profiler (Pandas + NumPy + SciPy)
-├── Visualization Layer (Plotly)
-├── Issue Detector (outliers, skew, cardinality, missing patterns)
-└── Claude AI Narrator (Anthropic API)
-    ↓
-Outputs: Dashboard + AI Insights + Feature Engineering Plan + Code
-```
-
----
-
-## 🤝 Contributing
-
-Pull requests welcome! Areas we'd love help with:
-
-- [ ] Time series analysis module
-- [ ] Geospatial column detection & mapping
-- [ ] PDF report export
-- [ ] Model recommendation engine
-- [ ] Kaggle dataset URL import
-- [ ] More sample datasets
 
 ---
 
@@ -128,7 +72,7 @@ MIT License — free to use, fork, modify, and distribute.
 
 ## 🌸 About
 
-Built by [Anu](https://linkedin.com/in/anu) — GenAI Lead, WiDS Ambassador, ODSC Austin Founder.
+Built by [Anu](https://www.linkedin.com/in/anupama-garani/) — GenAI Lead, ODSC Austin, WiDS Ambassador
 
 Inspired by the belief that data science education should be accessible to everyone, regardless of coding background.
 
