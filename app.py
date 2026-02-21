@@ -314,37 +314,67 @@ hr { border-color: var(--border); }
 
 @st.cache_data
 def load_data(uploaded_file):
-    name = uploaded_file.name.lower()
-    if name.endswith(".csv"):
-        try:
-            return pd.read_csv(uploaded_file, encoding="utf-8")
-        except UnicodeDecodeError:
-            return pd.read_csv(uploaded_file, encoding="latin1")
-    elif name.endswith((".xlsx", ".xls")):
-        return pd.read_excel(uploaded_file)
-    elif name.endswith(".parquet"):
-        return pd.read_parquet(uploaded_file)
-    elif name.endswith(".json"):
-        return pd.read_json(uploaded_file)
-    elif name.endswith(".tsv"):
-        return pd.read_csv(uploaded_file, sep="\t")
+    # Security: File size limit (100MB)
+    MAX_SIZE_MB = 100
+    file_size_mb = uploaded_file.size / (1024 * 1024)
+    if file_size_mb > MAX_SIZE_MB:
+        st.error(f"⚠️ File too large ({file_size_mb:.1f}MB). Max size: {MAX_SIZE_MB}MB")
+        return None
+    
+    try:
+        name = uploaded_file.name.lower()
+        if name.endswith(".csv"):
+            try:
+                df = pd.read_csv(uploaded_file, encoding="utf-8", nrows=500000)
+            except UnicodeDecodeError:
+                df = pd.read_csv(uploaded_file, encoding="latin1", nrows=500000)
+        elif name.endswith((".xlsx", ".xls")):
+            df = pd.read_excel(uploaded_file, nrows=500000)
+        elif name.endswith(".parquet"):
+            df = pd.read_parquet(uploaded_file)
+        elif name.endswith(".json"):
+            df = pd.read_json(uploaded_file)
+        elif name.endswith(".tsv"):
+            df = pd.read_csv(uploaded_file, sep="\t", nrows=500000)
+        else:
+            return None
+        
+        # Security: Column limit
+        if len(df.columns) > 1000:
+            st.error("⚠️ Too many columns (max 1000). Please reduce dimensions.")
+            return None
+        
+        # Security: Row limit warning
+        if len(df) >= 500000:
+            st.warning("⚡ Dataset truncated to 500,000 rows for performance.")
+            
+        return df
+    except Exception as e:
+        st.error(f"⚠️ Error loading file: {str(e)[:100]}")
+        return None
     return None
 
 def classify_columns(df):
-    numeric = df.select_dtypes(include=np.number).columns.tolist()
-    categorical = df.select_dtypes(include=["object", "category"]).columns.tolist()
-    datetime_cols = df.select_dtypes(include=["datetime"]).columns.tolist()
-    # Try to parse potential datetime strings
-    for col in categorical:
-        try:
-            parsed = pd.to_datetime(df[col], format='mixed')
-            if parsed.notna().sum() > 0.8 * len(df):
-                datetime_cols.append(col)
-                categorical.remove(col)
-        except Exception:
-            pass
-    boolean = df.select_dtypes(include=["bool"]).columns.tolist()
-    return numeric, categorical, datetime_cols, boolean
+    try:
+        numeric = df.select_dtypes(include=np.number).columns.tolist()
+        categorical = df.select_dtypes(include=["object", "category"]).columns.tolist()
+        datetime_cols = df.select_dtypes(include=["datetime"]).columns.tolist()
+        
+        # Security: Limit datetime parsing attempts to prevent DoS
+        for col in categorical[:50]:  # Only check first 50 categorical columns
+            try:
+                parsed = pd.to_datetime(df[col].head(1000), format='mixed', errors='coerce')
+                if parsed.notna().sum() > 800:  # 80% of sample
+                    datetime_cols.append(col)
+                    categorical.remove(col)
+            except Exception:
+                pass
+        
+        boolean = df.select_dtypes(include=["bool"]).columns.tolist()
+        return numeric, categorical, datetime_cols, boolean
+    except Exception:
+        # Fallback to basic classification
+        return df.select_dtypes(include=np.number).columns.tolist(), [], [], []
 
 def compute_quality_score(df):
     score = 100
@@ -404,14 +434,47 @@ def get_df_summary(df):
         summary[f"stats_{col}"] = df[col].describe().round(3).to_dict()
     return summary
 
+@st.cache_data(ttl=3600, show_spinner=False)
+def ask_claude_cached(messages_json, system_prompt, model_name):
+    """Cached Claude API calls to reduce costs and improve performance."""
+    try:
+        import json as json_module
+        from anthropic import Anthropic
+        
+        # Reconstruct client and messages
+        api_key = st.session_state.get("api_key", "")
+        if not api_key:
+            return "⚠️ Please add your Claude API key in the sidebar."
+        
+        client = Anthropic(api_key=api_key)
+        messages = json_module.loads(messages_json)
+        
+        response = client.messages.create(
+            model=model_name,
+            max_tokens=1200,
+            system=system_prompt,
+            messages=messages,
+            timeout=30.0,  # Security: timeout after 30 seconds
+        )
+        return response.content[0].text
+    except Exception as e:
+        error_msg = str(e)
+        if "rate_limit" in error_msg.lower():
+            return "⚠️ Rate limit reached. Please wait a moment and try again."
+        elif "invalid" in error_msg.lower() or "authentication" in error_msg.lower():
+            return "⚠️ Invalid API key. Please check your credentials."
+        else:
+            return f"⚠️ Error: {error_msg[:100]}"
+
 def ask_claude(client, messages, system_prompt):
-    response = client.messages.create(
-        model="claude-sonnet-4-20250514",
-        max_tokens=1200,
-        system=system_prompt,
-        messages=messages,
-    )
-    return response.content[0].text
+    """Wrapper for ask_claude_cached to maintain compatibility."""
+    try:
+        import json as json_module
+        messages_json = json_module.dumps(messages)
+        model_name = "claude-sonnet-4-20250514"
+        return ask_claude_cached(messages_json, system_prompt, model_name)
+    except Exception as e:
+        return f"⚠️ Error: {str(e)[:100]}"
 
 # ── Session state ─────────────────────────────────────────────────────────────
 if "df" not in st.session_state:
@@ -435,14 +498,30 @@ with st.sidebar:
     """, unsafe_allow_html=True)
 
     st.markdown("**Claude API Key**")
-    api_key_input = st.text_input(
-        "API Key", type="password", label_visibility="collapsed",
-        placeholder="sk-ant-...",
-        value=st.session_state.api_key,
-    )
-    if api_key_input:
-        st.session_state.api_key = api_key_input
-    st.caption("Get yours at [console.anthropic.com](https://console.anthropic.com)")
+    
+    # Security: Try to get API key from secrets first
+    secret_key = None
+    try:
+        secret_key = st.secrets.get("ANTHROPIC_API_KEY")
+    except Exception:
+        pass
+    
+    if secret_key:
+        st.session_state.api_key = secret_key
+        st.caption("✓ Using API key from secrets")
+    else:
+        api_key_input = st.text_input(
+            "API Key", type="password", label_visibility="collapsed",
+            placeholder="sk-ant-...",
+            value=st.session_state.api_key,
+        )
+        if api_key_input:
+            # Security: Basic validation
+            if api_key_input.startswith("sk-ant-") and len(api_key_input) > 20:
+                st.session_state.api_key = api_key_input
+            else:
+                st.error("⚠️ Invalid API key format")
+        st.caption("Get yours at [console.anthropic.com](https://console.anthropic.com)")
 
     st.divider()
 
